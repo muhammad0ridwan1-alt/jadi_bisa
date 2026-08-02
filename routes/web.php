@@ -14,26 +14,28 @@ use App\Models\Pengumuman;
 use App\Models\Jadwal;
 
 // Helper to safely format YouTube embed links (handles watch?v=, youtu.be/, live/, &t= params)
-function formatYoutubeEmbed($url) {
-    if (!$url) return null;
-    
-    if (str_contains($url, 'youtu.be/')) {
-        $id = explode('youtu.be/', $url)[1] ?? '';
-        $id = strtok($id, '?');
-        return "https://www.youtube.com/embed/" . $id;
-    }
-    
-    if (str_contains($url, 'watch?v=')) {
-        $id = explode('watch?v=', $url)[1] ?? '';
-        $id = strtok($id, '&');
-        return "https://www.youtube.com/embed/" . $id;
-    }
+if (!function_exists('formatYoutubeEmbed')) {
+    function formatYoutubeEmbed($url) {
+        if (!$url) return null;
+        
+        if (str_contains($url, 'youtu.be/')) {
+            $id = explode('youtu.be/', $url)[1] ?? '';
+            $id = strtok($id, '?');
+            return "https://www.youtube.com/embed/" . $id;
+        }
+        
+        if (str_contains($url, 'watch?v=')) {
+            $id = explode('watch?v=', $url)[1] ?? '';
+            $id = strtok($id, '&');
+            return "https://www.youtube.com/embed/" . $id;
+        }
 
-    if (str_contains($url, 'embed/')) {
+        if (str_contains($url, 'embed/')) {
+            return $url;
+        }
+
         return $url;
     }
-
-    return $url;
 }
 
 // Landing Page
