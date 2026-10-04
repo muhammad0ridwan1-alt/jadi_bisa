@@ -29,11 +29,11 @@ foreach ($oldZips as $z) {
 echo "\n[3/4] Packaging Split ZIP files for Monsta File Manager...\n";
 
 $splits = [
-    'part1_app.zip' => 'app bootstrap config database public resources routes storage artisan composer.json index.php .htaccess .env.production .htaccess.production index.php.production export_jadibisa.sql deploy_installer.php unzip.php unzip_all.php',
-    'part2_vendor_laravel.zip' => 'vendor/laravel/framework vendor/laravel/prompts vendor/laravel/serializable-closure vendor/laravel/tinker vendor/laravel/agent-detector vendor/laravel/breeze vendor/composer vendor/autoload.php',
+    'part1_app.zip' => 'app bootstrap config database public resources routes storage artisan composer.json index.php .htaccess .env.production .htaccess.production index.php.production export_jadibisa.sql deploy_installer.php unzip.php unzip_all.php test.php',
+    'part2_vendor_laravel.zip' => 'vendor/laravel vendor/composer vendor/autoload.php',
     'part3_vendor_symfony.zip' => 'vendor/symfony',
     'part4_vendor_libs1.zip' => 'vendor/guzzlehttp vendor/psr vendor/league vendor/monolog vendor/nesbot vendor/ramsey vendor/brick vendor/doctrine vendor/egulias vendor/nunomaduro vendor/carbonphp vendor/fruitcake vendor/dragonmantank vendor/tijsverkoyen',
-    'part5_vendor_libs2.zip' => 'vendor/phpoption vendor/vlucas vendor/voku vendor/dflydev vendor/graham-campbell vendor/staabm vendor/ralouphie vendor/nette vendor/nikic vendor/bin'
+    'part5_vendor_libs2.zip' => 'vendor/phpoption vendor/vlucas vendor/voku vendor/dflydev vendor/graham-campbell vendor/ralouphie vendor/nette vendor/nikic vendor/bin vendor/psy'
 ];
 
 foreach ($splits as $zipName => $targets) {
@@ -48,9 +48,9 @@ foreach ($splits as $zipName => $targets) {
     }
 }
 
-// 4. Package single all-in-one zip (also optimized under 10MB)
+// 4. Package single all-in-one zip (if under 10MB)
 echo "\n[4/4] Building single all-in-one jadibisa_full.zip...\n";
-$allTargets = 'app bootstrap config database public resources routes storage vendor/laravel/framework vendor/laravel/prompts vendor/laravel/serializable-closure vendor/laravel/tinker vendor/laravel/agent-detector vendor/laravel/breeze vendor/composer vendor/autoload.php vendor/symfony vendor/guzzlehttp vendor/psr vendor/league vendor/monolog vendor/nesbot vendor/ramsey vendor/brick vendor/doctrine vendor/egulias vendor/nunomaduro vendor/carbonphp vendor/fruitcake vendor/dragonmantank vendor/tijsverkoyen vendor/phpoption vendor/vlucas vendor/voku vendor/dflydev vendor/graham-campbell vendor/staabm vendor/ralouphie vendor/nette vendor/nikic vendor/bin artisan composer.json index.php .htaccess .env.production .htaccess.production index.php.production export_jadibisa.sql deploy_installer.php unzip.php unzip_all.php';
+$allTargets = 'app bootstrap config database public resources routes storage vendor artisan composer.json index.php .htaccess .env.production .htaccess.production index.php.production export_jadibisa.sql deploy_installer.php unzip.php unzip_all.php test.php';
 
 $cmdFull = "tar.exe -a -cf \"$rootDir/jadibisa_full.zip\" $allTargets";
 exec($cmdFull, $out, $ret);
