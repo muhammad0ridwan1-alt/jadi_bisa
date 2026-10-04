@@ -12,27 +12,46 @@
         @forelse($tugases as $tugas)
             @php
                 $submisi = $tugas->submissions->where('mahasiswa_id', auth()->id())->first();
+                $isOverdue = now()->greaterThan($tugas->deadline) && !$submisi;
+                $isNear = now()->diffInHours($tugas->deadline, false) >= 0 && now()->diffInHours($tugas->deadline, false) <= 24 && !$submisi;
             @endphp
-            <div data-aos="fade-up" class="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-100">
+            <div data-aos="fade-up" class="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-100 space-y-3">
                 <!-- Top Info -->
                 <div class="space-y-2 sm:space-y-3 mb-4">
                     <div class="flex flex-wrap items-center gap-2">
                         <span class="px-2.5 py-0.5 bg-sky-50 text-sky-700 font-bold text-[11px] sm:text-xs rounded-full border border-sky-200">
                             {{ $tugas->mataKuliah->name }}
                         </span>
-                        <span class="text-[11px] sm:text-xs text-rose-600 font-bold bg-rose-50 px-2 py-0.5 rounded-full border border-rose-100">
+                        
+                        @if($submisi)
+                            <span class="px-2.5 py-0.5 bg-emerald-100 text-emerald-800 font-extrabold text-[11px] sm:text-xs rounded-full border border-emerald-200">
+                                🟢 Sudah Dikumpul
+                            </span>
+                        @elseif($isOverdue)
+                            <span class="px-2.5 py-0.5 bg-rose-100 text-rose-800 font-extrabold text-[11px] sm:text-xs rounded-full border border-rose-200 animate-pulse">
+                                🔴 Terlewat (Overdue)
+                            </span>
+                        @elseif($isNear)
+                            <span class="px-2.5 py-0.5 bg-amber-100 text-amber-900 font-extrabold text-[11px] sm:text-xs rounded-full border border-amber-300">
+                                🟡 Deadline Dekat (H-1)
+                            </span>
+                        @endif
+
+                        <span class="text-[11px] sm:text-xs text-slate-500 font-bold bg-slate-100 px-2 py-0.5 rounded-full border border-slate-200">
                             Deadline: {{ $tugas->deadline->format('d M Y, H:i') }} WIB
                         </span>
                     </div>
 
                     <h3 class="text-base sm:text-xl font-extrabold text-slate-900">{{ $tugas->title }}</h3>
-                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed line-clamp-3">{{ $tugas->description }}</p>
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">{{ $tugas->description }}</p>
 
                     @if($tugas->file_path)
-                        <a href="{{ asset('storage/' . $tugas->file_path) }}" target="_blank" class="inline-flex items-center gap-2 text-[11px] sm:text-xs font-bold text-sky-600 hover:underline active:opacity-70">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                            Unduh Lampiran Soal Dosen
-                        </a>
+                        <div class="pt-2">
+                            <a href="{{ asset('storage/' . $tugas->file_path) }}" target="_blank" class="inline-flex items-center gap-2 text-xs font-bold text-sky-600 bg-sky-50 px-3 py-1.5 rounded-lg border border-sky-200 hover:bg-sky-100 active:scale-95">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                Unduh / Baca Lampiran Soal Dosen (PDF)
+                            </a>
+                        </div>
                     @endif
                 </div>
 

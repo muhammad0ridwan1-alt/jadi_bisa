@@ -5,13 +5,10 @@
 
     <!-- Welcome Hero Banner -->
     <div data-aos="fade-down" class="mb-6 sm:mb-8 p-6 sm:p-8 rounded-xl sm:rounded-2xl bg-white border border-slate-200/80 shadow-sm">
-        <div class="space-y-2">
-            <span class="inline-block px-3 py-1 bg-sky-50 text-sky-700 rounded-md text-xs font-bold border border-sky-200">
-                Administrator System Control
-            </span>
-            <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">Selamat Datang, Admin</h2>
-            <p class="text-slate-600 text-xs sm:text-sm font-normal leading-relaxed">
-                Kelola seluruh data pengguna, peran akses dosen & mahasiswa, serta publikasikan pengumuman akademik.
+        <div class="space-y-1.5">
+            <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">Dashboard Admin</h2>
+            <p class="text-slate-600 text-xs sm:text-sm font-normal">
+                Kelola data pengguna, angkatan, kelas, mata kuliah, jadwal, dan pengumuman.
             </p>
         </div>
     </div>
@@ -60,26 +57,60 @@
     </div>
 
     <!-- Quick Navigation Panels -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-16 md:mb-0">
-        <div data-aos="fade-right" class="bg-white p-5 sm:p-6 rounded-xl sm:rounded-2xl shadow-sm border border-slate-200/80 space-y-4">
-            <h3 class="font-bold text-slate-900 text-base sm:text-lg">Kelola Pengguna</h3>
-            <p class="text-xs text-slate-500">Lihat dan hapus akun mahasiswa atau dosen yang terdaftar di platform.</p>
-            <div class="flex gap-3">
-                <a href="{{ route('admin.users', 'mahasiswa') }}" class="flex-1 text-center py-2.5 bg-sky-50 text-sky-700 font-bold rounded-xl text-xs hover:bg-sky-100 transition-colors border border-sky-200 active:scale-95">
-                    Kelola Mahasiswa
-                </a>
-                <a href="{{ route('admin.users', 'dosen') }}" class="flex-1 text-center py-2.5 bg-emerald-50 text-emerald-700 font-bold rounded-xl text-xs hover:bg-emerald-100 transition-colors border border-emerald-200 active:scale-95">
-                    Kelola Dosen
-                </a>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-5 mb-16 md:mb-0">
+        <div data-aos="fade-up" data-aos-delay="0" class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 space-y-3 flex flex-col justify-between">
+            <div>
+                <h3 class="font-extrabold text-slate-900 text-base mb-1">🎓 Master Angkatan</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">Tambah Angkatan 30, 31 baru & tetapkan Tahun Ajaran kampus.</p>
             </div>
+            <a href="{{ route('admin.angkatan') }}" class="block w-full text-center py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black rounded-xl text-xs transition-colors shadow-sm active:scale-95">
+                Master Angkatan →
+            </a>
         </div>
 
-        <div data-aos="fade-left" class="bg-white p-5 sm:p-6 rounded-xl sm:rounded-2xl shadow-sm border border-slate-200/80 space-y-4">
-            <h3 class="font-bold text-slate-900 text-base sm:text-lg">Publikasi Informasi</h3>
-            <p class="text-xs text-slate-500">Buat pengumuman official ke seluruh mahasiswa atau per jurusan tertentu.</p>
-            <a href="{{ route('admin.pengumuman') }}" class="block w-full text-center py-2.5 bg-slate-900 text-white font-bold rounded-xl text-xs hover:bg-slate-800 transition-colors active:scale-95">
-                Buka Pengumuman Admin
+        <div data-aos="fade-up" data-aos-delay="50" class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 space-y-3 flex flex-col justify-between">
+            <div>
+                <h3 class="font-extrabold text-slate-900 text-base mb-1">🏢 Master Kelas</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">Buat daftar kelas baru per angkatan secara dinamis tanpa hardcode.</p>
+            </div>
+            <a href="{{ route('admin.kelas_management') }}" class="block w-full text-center py-2.5 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-xl text-xs transition-colors shadow-sm active:scale-95">
+                Master Kelas →
             </a>
+        </div>
+
+        <div data-aos="fade-up" data-aos-delay="100" class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 space-y-3 flex flex-col justify-between">
+            <div>
+                <h3 class="font-extrabold text-slate-900 text-base mb-1">📚 Master Matkul</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">Tambah/edit kurikulum mata kuliah, kode MK, cawu, & Dosen Pengampu.</p>
+            </div>
+            <a href="{{ route('admin.matkul') }}" class="block w-full text-center py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs transition-colors shadow-sm active:scale-95">
+                Master Matkul →
+            </a>
+        </div>
+
+        <div data-aos="fade-up" data-aos-delay="150" class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 space-y-3 flex flex-col justify-between">
+            <div>
+                <h3 class="font-extrabold text-slate-900 text-base mb-1">📅 Kelola Jadwal</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">Atur jadwal sesi perkuliahan per kelas, ruangan, jam, dan angkatan.</p>
+            </div>
+            <a href="{{ route('admin.jadwal') }}" class="block w-full text-center py-2.5 bg-sky-600 text-white font-bold rounded-xl text-xs hover:bg-sky-700 transition-colors shadow-sm active:scale-95">
+                Kelola Jadwal →
+            </a>
+        </div>
+
+        <div data-aos="fade-up" data-aos-delay="200" class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 space-y-3 flex flex-col justify-between">
+            <div>
+                <h3 class="font-extrabold text-slate-900 text-base mb-1">👥 Kelola Pengguna</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">Edit data Mahasiswa/Dosen, NIM, cawu berjalan, kelas, & angkatan.</p>
+            </div>
+            <div class="flex gap-1.5 pt-1">
+                <a href="{{ route('admin.users', 'mahasiswa') }}" class="flex-1 text-center py-2 bg-sky-50 text-sky-700 font-bold rounded-xl text-[11px] hover:bg-sky-100 border border-sky-200 active:scale-95">
+                    Mahasiswa
+                </a>
+                <a href="{{ route('admin.users', 'dosen') }}" class="flex-1 text-center py-2 bg-emerald-50 text-emerald-700 font-bold rounded-xl text-[11px] hover:bg-emerald-100 border border-emerald-200 active:scale-95">
+                    Dosen
+                </a>
+            </div>
         </div>
     </div>
 </x-app-layout>

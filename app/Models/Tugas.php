@@ -16,6 +16,8 @@ class Tugas extends Model
         'file_path',
         'deadline',
         'max_score',
+        'angkatan',
+        'tahun_ajaran',
     ];
 
     protected $casts = [

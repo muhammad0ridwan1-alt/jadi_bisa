@@ -7,25 +7,25 @@
     <div data-aos="fade-down" class="mb-6">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-slate-200/80 shadow-sm">
             <div class="space-y-1">
-                <div class="flex items-center gap-2">
-                    <span class="px-2.5 py-0.5 text-xs font-bold rounded-full bg-sky-100 text-sky-700">
-                        Blind System Typing BEC
-                    </span>
-                    <span class="text-xs text-slate-500 font-medium">Administrasi & Bisnis</span>
-                </div>
-                <h2 class="text-xl sm:text-2xl font-black text-slate-900">Uji Kecepatan Ketik 10 Jari (CPM)</h2>
-                <p class="text-xs sm:text-sm text-slate-500">Timer berjalan saat tombol pertama diketik & berhenti otomatis ketika teks naskah selesai.</p>
+                <h2 class="text-xl sm:text-2xl font-black text-slate-900">Uji Ketik 10 Jari (BST)</h2>
+                <p class="text-xs sm:text-sm text-slate-500">Mulai ketik naskah di bawah untuk mengukur kecepatan (CPM) dan akurasi.</p>
             </div>
-            <div class="bg-sky-50 px-5 py-3 rounded-xl border border-sky-200 text-center shrink-0">
-                <span class="block text-[10px] uppercase font-bold text-sky-600 tracking-wider">Target Utama BEC</span>
-                <span class="block text-2xl font-black text-sky-800">200+ CPM</span>
-                <span class="block text-[10px] text-slate-500 font-semibold">Akurasi Min. 95%</span>
+            <div class="flex items-center gap-3 shrink-0">
+                <div class="bg-sky-50 px-5 py-3 rounded-xl border border-sky-200 text-center">
+                    <span class="block text-[10px] uppercase font-bold text-sky-600 tracking-wider">Target Kelulusan</span>
+                    <span class="block text-2xl font-black text-sky-800">200+ CPM</span>
+                    <span class="block text-[10px] text-slate-500 font-semibold">Akurasi Min. 95%</span>
+                </div>
+                <a href="{{ route('mahasiswa.typing.certificate') }}" target="_blank" class="px-5 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs rounded-xl shadow-sm transition-all flex items-center gap-2 border border-emerald-400/30 active:scale-95">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
+                    <span>Cetak Sertifikat BST</span>
+                </a>
             </div>
         </div>
     </div>
 
     <!-- Typing App Container -->
-    <div x-data="typingApp()" x-init="initApp()" class="space-y-6 mb-16 md:mb-0" data-aos="fade-up">
+    <div x-data="typingApp()" x-init="initApp()" @keydown.window="handleGlobalKeydown($event)" class="space-y-6 mb-16 md:mb-0" data-aos="fade-up">
         <!-- Control Bar: Language, Time & Toggles (Kapital, Nomor, Tanda Baca) -->
         <div class="bg-white p-4 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200/80 shadow-sm space-y-4 text-xs sm:text-sm">
             <div class="flex flex-wrap items-center justify-between gap-4">
@@ -153,6 +153,20 @@
             />
         </div>
 
+        <!-- Quick Restart Shortcut Bar -->
+        <div class="flex flex-wrap items-center justify-between gap-3 p-3 bg-white rounded-xl border border-slate-200/80 shadow-2xs">
+            <button @click="resetTest()" type="button" class="px-4 py-2 bg-slate-100 hover:bg-sky-50 text-slate-700 hover:text-sky-700 font-extrabold rounded-xl border border-slate-200 text-xs transition-all flex items-center gap-2 active:scale-95 shadow-2xs">
+                <svg class="w-4 h-4 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                <span>🔄 Mulai Ulang / Reset</span>
+            </button>
+            <div class="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
+                <span>Shortcut Mulai Ulang:</span>
+                <kbd class="px-2 py-0.5 bg-slate-100 text-slate-800 border border-slate-300 rounded font-mono font-bold text-[11px]">Tab</kbd>
+                <span>atau</span>
+                <kbd class="px-2 py-0.5 bg-slate-100 text-slate-800 border border-slate-300 rounded font-mono font-bold text-[11px]">Tab + Enter</kbd>
+            </div>
+        </div>
+
         <!-- Test Result Modal / Summary Card -->
         <div x-show="isFinished" style="display: none;" class="bg-gradient-to-br from-slate-900 via-slate-950 to-sky-950 text-white rounded-2xl p-6 sm:p-8 shadow-2xl space-y-6" data-aos="zoom-in">
             <div class="flex justify-between items-center border-b border-white/10 pb-4">
@@ -261,6 +275,19 @@
 
                 initApp() {
                     this.resetTest();
+                },
+
+                handleGlobalKeydown(e) {
+                    if (e.key === 'Tab' || e.keyCode === 9) {
+                        e.preventDefault();
+                        this.resetTest();
+                    } else if (e.key === 'Escape') {
+                        e.preventDefault();
+                        this.resetTest();
+                    } else if (this.isFinished && (e.key === 'Enter' || e.key === ' ')) {
+                        e.preventDefault();
+                        this.resetTest();
+                    }
                 },
 
                 setLanguage(lang) {
@@ -438,6 +465,25 @@
                     if (this.timer) clearInterval(this.timer);
                     this.isFinished = true;
                     this.calculateStats();
+                    this.saveScoreToDb();
+                },
+
+                saveScoreToDb() {
+                    if (this.cpm <= 0) return;
+                    fetch('{{ route("mahasiswa.typing.save") }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            cpm: this.cpm,
+                            wpm: this.wpm,
+                            accuracy: this.accuracy
+                        })
+                    }).then(res => res.json()).then(data => {
+                        console.log('Skor BST berhasil disimpan ke Leaderboard:', data);
+                    }).catch(err => console.error('Gagal menyimpan skor:', err));
                 },
 
                 getCharClass(wordIndex, charIndex) {

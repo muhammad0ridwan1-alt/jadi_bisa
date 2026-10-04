@@ -11,32 +11,48 @@
                     <span class="px-2.5 py-1 bg-sky-50 text-sky-700 rounded-md text-[11px] sm:text-xs font-bold border border-sky-200">
                         Administrasi Perkantoran
                     </span>
-                    <span class="text-[11px] sm:text-xs bg-slate-100 text-slate-700 px-2.5 py-1 rounded-md font-bold">Semester 2</span>
+                    <span class="text-[11px] sm:text-xs bg-slate-100 text-slate-700 px-2.5 py-1 rounded-md font-bold">Cawu {{ auth()->user()->cawu ?? 1 }}</span>
+                    @if(auth()->user()->angkatan)
+                        <span class="text-[11px] sm:text-xs bg-slate-100 text-slate-700 px-2.5 py-1 rounded-md font-bold">Angkatan {{ auth()->user()->angkatan }}</span>
+                    @endif
                 </div>
-                <h2 class="text-xl sm:text-3xl font-bold text-slate-900">Selamat Datang, {{ auth()->user()->name }}</h2>
-                <p class="text-slate-600 text-xs sm:text-sm font-normal leading-relaxed">
-                    Pilih Mata Kuliah di bawah untuk membuka modul materi, kuis evaluasi, dan tugas praktikum.
+                <h2 class="text-xl sm:text-3xl font-bold text-slate-900">Halo, {{ auth()->user()->name }}</h2>
+                <p class="text-slate-600 text-xs sm:text-sm font-normal">
+                    Pilih mata kuliah untuk mengakses modul materi, kuis, dan tugas.
                 </p>
             </div>
 
             <div class="hidden sm:block bg-slate-50 p-4 rounded-xl border border-slate-200 text-center shrink-0 space-y-1">
                 <span class="block text-xs font-bold text-slate-500 uppercase">Performa</span>
-                <span class="block text-2xl font-bold text-sky-600">IPK 3.85</span>
-                <span class="inline-block text-[11px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">Sangat Memuaskan</span>
+                <span class="block text-2xl font-bold text-sky-600">IPK {{ auth()->user()->ipk }}</span>
+                @php
+                    $ipkVal = (float)(auth()->user()->ipk ?? 0);
+                @endphp
+                @if($ipkVal >= 3.50)
+                    <span class="inline-block text-[11px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">Sangat Memuaskan</span>
+                @elseif($ipkVal >= 3.00)
+                    <span class="inline-block text-[11px] bg-sky-100 text-sky-800 px-2 py-0.5 rounded font-bold">Memuaskan</span>
+                @elseif($ipkVal >= 2.50)
+                    <span class="inline-block text-[11px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded font-bold">Cukup</span>
+                @elseif($ipkVal > 0)
+                    <span class="inline-block text-[11px] bg-rose-100 text-rose-800 px-2 py-0.5 rounded font-bold">Perlu Ditingkatkan</span>
+                @else
+                    <span class="inline-block text-[11px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-bold">Belum Ada Nilai</span>
+                @endif
             </div>
         </div>
     </div>
 
-    <!-- Blind System Typing Feature Banner -->
-    <div data-aos="fade-up" class="mb-4 sm:mb-8 p-4 sm:p-6 rounded-xl sm:rounded-2xl bg-gradient-to-r from-slate-900 via-sky-950 to-slate-900 text-white shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+    <!-- Blind System Typing Feature Banner (Clean Sky-Blue Card Theme matching Website) -->
+    <div data-aos="fade-up" class="mb-4 sm:mb-8 p-5 sm:p-6 rounded-xl sm:rounded-2xl bg-sky-600 text-white shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border border-sky-500">
         <div class="space-y-1">
-            <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-sky-500/20 text-sky-300 text-xs font-bold border border-sky-400/30">
+            <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-white/20 text-white text-xs font-bold border border-white/30">
                 Mata Kuliah Spesial BEC
             </div>
-            <h3 class="text-lg sm:text-xl font-extrabold">Latihan Ketik 10 Jari (Blind System Typing)</h3>
-            <p class="text-xs sm:text-sm text-slate-300">Asah kecepatan (WPM) & akurasi ketik tanpa melihat keyboard untuk persiapan ujian kampus.</p>
+            <h3 class="text-lg sm:text-xl font-extrabold text-white">Latihan Ketik 10 Jari (Blind System Typing)</h3>
+            <p class="text-xs sm:text-sm text-sky-100">Asah kecepatan (WPM) & akurasi ketik tanpa melihat keyboard untuk persiapan ujian kampus.</p>
         </div>
-        <a href="{{ route('mahasiswa.typing') }}" class="shrink-0 w-full sm:w-auto text-center px-5 py-2.5 bg-sky-600 hover:bg-sky-500 text-white font-extrabold rounded-xl text-xs sm:text-sm shadow-md transition-all active:scale-95">
+        <a href="{{ route('mahasiswa.typing') }}" class="shrink-0 w-full sm:w-auto text-center px-5 py-2.5 bg-white hover:bg-sky-50 text-sky-800 font-extrabold rounded-xl text-xs sm:text-sm shadow-sm transition-all active:scale-95">
             Mulai Tes Ketik
         </a>
     </div>
@@ -52,7 +68,7 @@
         </span>
     </div>
 
-    <!-- Mata Kuliah Cards Grid (1 col on mobile, 2 on tablet, 3 on desktop) -->
+    <!-- Mata Kuliah Cards Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-16 md:mb-0">
         @forelse($mataKuliahs as $index => $mk)
             <a href="{{ route('mahasiswa.matkul.show', $mk->id) }}" data-aos="fade-up" data-aos-delay="{{ $index * 50 }}" class="bg-white rounded-xl sm:rounded-2xl shadow-sm hover:shadow-md border border-slate-200/80 overflow-hidden hover:border-sky-300 transition-all duration-200 group flex flex-col justify-between active:scale-[0.98]">
@@ -102,8 +118,8 @@
                 </div>
             </a>
         @empty
-            <div class="col-span-full text-center py-12 sm:py-16 bg-white rounded-xl sm:rounded-2xl border border-dashed border-slate-300">
-                <p class="text-slate-500 font-semibold text-sm">Belum ada Mata Kuliah yang tersedia.</p>
+            <div class="col-span-full py-12 text-center text-slate-400 italic">
+                Belum ada mata kuliah terdaftar.
             </div>
         @endforelse
     </div>

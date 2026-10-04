@@ -23,6 +23,11 @@ class RoleMiddleware
 
         $userRole = Auth::user()->role;
 
+        // Admin has superuser access to check all panels (admin, dosen, mahasiswa)
+        if ($userRole === 'admin') {
+            return $next($request);
+        }
+
         if (!in_array($userRole, $roles)) {
             abort(403, 'Anda tidak memiliki akses ke halaman ini.');
         }

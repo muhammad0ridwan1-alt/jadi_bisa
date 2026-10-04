@@ -30,17 +30,26 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        $validClasses = \App\Models\KelasList::pluck('name')->toArray();
+
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'jurusan' => ['required', 'in:Administrasi Perkantoran,Bisnis Manajemen'],
+            'kelas' => ['nullable', 'string', count($validClasses) > 0 ? 'in:' . implode(',', $validClasses) : 'nullable'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
+
+        $activeAngkatan = \App\Models\Angkatan::where('is_active', true)->first()?->nomor_angkatan ?? 30;
+        $defaultKelas = \App\Models\KelasList::where('angkatan', $activeAngkatan)->where('jurusan', $request->jurusan)->first()?->name;
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'jurusan' => $request->jurusan,
+            'kelas' => $request->kelas ?: ($defaultKelas ?: null),
+            'angkatan' => $activeAngkatan,
+            'cawu' => 1,
             'role' => 'mahasiswa',
             'password' => Hash::make($request->password),
         ]);

@@ -5,15 +5,75 @@
 
     <!-- Welcome Hero Banner -->
     <div data-aos="fade-down" class="mb-6 sm:mb-8 p-6 sm:p-8 rounded-xl sm:rounded-2xl bg-white border border-slate-200/80 shadow-sm">
-        <div class="space-y-2">
-            <span class="inline-block px-3 py-1 bg-sky-50 text-sky-700 rounded-md text-xs font-bold border border-sky-200">
-                Panel Pengajar / Dosen
-            </span>
-            <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">Selamat Datang, {{ auth()->user()->name }}</h2>
-            <p class="text-slate-600 text-xs sm:text-sm font-normal leading-relaxed">
-                Kelola mata kuliah, unggah materi pembelajaran PDF/video, buat kuis & tugas praktikum, serta berikan penilaian kuis mahasiswa.
+        <div class="space-y-1.5">
+            <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">Dashboard Dosen</h2>
+            <p class="text-slate-600 text-xs sm:text-sm font-normal">
+                Kelola materi perkuliahan, kuis evaluasi, penugasan praktikum, rekap nilai, dan jadwal mengajar Anda.
             </p>
         </div>
+    </div>
+
+    <!-- Quick Classroom Navigation Cards -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 mb-6 sm:mb-8">
+        <a href="{{ route('dosen.dashboard') }}" class="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs hover:shadow-md hover:border-sky-300 transition-all flex flex-col items-center text-center gap-2 group">
+            <div class="w-10 h-10 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center font-bold text-lg group-hover:scale-110 transition-transform">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+            </div>
+            <div>
+                <span class="block text-xs font-black text-slate-900">Kelas Saya</span>
+                <span class="text-[10px] text-slate-400 font-semibold">{{ $mataKuliahs->count() }} Kelas</span>
+            </div>
+        </a>
+
+        <a href="{{ route('dosen.modul') }}" class="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs hover:shadow-md hover:border-indigo-300 transition-all flex flex-col items-center text-center gap-2 group">
+            <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-lg group-hover:scale-110 transition-transform">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+            </div>
+            <div>
+                <span class="block text-xs font-black text-slate-900">Modul & Materi</span>
+                <span class="text-[10px] text-slate-400 font-semibold">{{ $moduls->count() }} Modul</span>
+            </div>
+        </a>
+
+        <a href="{{ route('dosen.tugas') }}" class="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs hover:shadow-md hover:border-purple-300 transition-all flex flex-col items-center text-center gap-2 group">
+            <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold text-lg group-hover:scale-110 transition-transform">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+            </div>
+            <div>
+                <span class="block text-xs font-black text-slate-900">Tugas Praktikum</span>
+                <span class="text-[10px] text-slate-400 font-semibold">Beri Tugas</span>
+            </div>
+        </a>
+
+        <a href="{{ route('dosen.penilaian') }}" class="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs hover:shadow-md hover:border-emerald-300 transition-all flex flex-col items-center text-center gap-2 group">
+            <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-lg group-hover:scale-110 transition-transform">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+            </div>
+            <div>
+                <span class="block text-xs font-black text-slate-900">Penilaian</span>
+                <span class="text-[10px] text-slate-400 font-semibold">Rekap & CSV</span>
+            </div>
+        </a>
+
+        <a href="{{ route('dosen.jadwal') }}" class="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs hover:shadow-md hover:border-amber-300 transition-all flex flex-col items-center text-center gap-2 group">
+            <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-lg group-hover:scale-110 transition-transform">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+            </div>
+            <div>
+                <span class="block text-xs font-black text-slate-900">Jadwal Mengajar</span>
+                <span class="text-[10px] text-slate-400 font-semibold">Senin - Jumat</span>
+            </div>
+        </a>
+
+        <a href="{{ route('dosen.mahasiswa') }}" class="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs hover:shadow-md hover:border-teal-300 transition-all flex flex-col items-center text-center gap-2 group">
+            <div class="w-10 h-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center font-bold text-lg group-hover:scale-110 transition-transform">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+            </div>
+            <div>
+                <span class="block text-xs font-black text-slate-900">Mahasiswa</span>
+                <span class="text-[10px] text-slate-400 font-semibold">Per Kelas Ajar</span>
+            </div>
+        </a>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-16 md:mb-0">

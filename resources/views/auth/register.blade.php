@@ -171,6 +171,31 @@
                         </div>
 
                         <div class="space-y-1">
+                            <label class="block text-xs font-bold text-slate-700">Kelas Mahasiswa (Batch 30)</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                                </div>
+                                <select name="kelas" class="block w-full pl-9 pr-8 py-2.5 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-600 focus:border-sky-600 text-xs sm:text-sm bg-white">
+                                    <option value="" selected>Pilih Kelas (Opsional / Menyusul)</option>
+                                    @php
+                                        $regClasses30 = \App\Models\KelasList::where('angkatan', 30)->get();
+                                    @endphp
+                                    @if($regClasses30->count() > 0)
+                                        <optgroup label="Angkatan 30">
+                                            @foreach($regClasses30 as $kc)
+                                                <option value="{{ $kc->name }}" {{ old('kelas') == $kc->name ? 'selected' : '' }}>Kelas {{ $kc->name }} ({{ $kc->jurusan === 'Bisnis Manajemen' ? 'BM' : 'AP' }})</option>
+                                            @endforeach
+                                        </optgroup>
+                                    @else
+                                        <option value="" disabled>— Pembagian Kelas Angkatan 30 Belum Dibuka (Menyusul) —</option>
+                                    @endif
+                                </select>
+                            </div>
+                            <x-input-error :messages="$errors->get('kelas')" class="mt-1" />
+                        </div>
+
+                        <div class="space-y-1">
                             <label class="block text-xs font-bold text-slate-700">Password</label>
                             <div class="relative">
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">

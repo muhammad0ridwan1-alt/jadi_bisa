@@ -35,16 +35,42 @@
                 </div>
             @endif
 
-            <div data-aos="fade-up" data-aos-delay="200" class="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-100">
-                <h3 class="text-base sm:text-lg font-bold text-slate-900 mb-3 sm:mb-4">Deskripsi Materi</h3>
+            <div data-aos="fade-up" data-aos-delay="200" class="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-100 space-y-4">
+                <h3 class="text-base sm:text-lg font-bold text-slate-900">Deskripsi Materi</h3>
                 <div class="prose max-w-none text-slate-600 text-sm sm:text-base">
                     {!! nl2br(e($modul->description ?: 'Tidak ada deskripsi yang ditambahkan untuk modul ini.')) !!}
                 </div>
+
+                @if($modul->file_path)
+                    <div class="pt-4 border-t border-slate-100 space-y-2">
+                        <h4 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                            <span>📄 Dokumen Materi PDF:</span>
+                        </h4>
+                        <div class="w-full h-[500px] bg-slate-900 rounded-xl overflow-hidden shadow-inner border border-slate-200">
+                            <iframe src="{{ asset('storage/' . $modul->file_path) }}" class="w-full h-full" frameborder="0"></iframe>
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
 
         <!-- Sidebar Actions -->
         <div class="lg:col-span-1 space-y-4 sm:space-y-6">
+            @php
+                $isCompleted = \App\Models\ModulProgress::where('mahasiswa_id', auth()->id())->where('modul_id', $modul->id)->where('is_completed', true)->exists();
+            @endphp
+
+            <!-- Progress Tracking Button -->
+            <div data-aos="fade-left" class="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-100 space-y-3">
+                <h3 class="text-base font-bold text-slate-900">Progress Pembelajaran</h3>
+                <form action="{{ route('mahasiswa.modul.toggle_progress', $modul->id) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="w-full py-3 px-4 rounded-xl font-extrabold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 shadow-xs active:scale-95 {{ $isCompleted ? 'bg-emerald-100 text-emerald-800 border border-emerald-300 hover:bg-emerald-200' : 'bg-sky-600 text-white hover:bg-sky-700' }}">
+                        <span>{{ $isCompleted ? '✅ Modul Ini Sudah Selesai' : '⏳ Tandai Selesai Dibaca' }}</span>
+                    </button>
+                </form>
+            </div>
+
             <div data-aos="fade-left" data-aos-delay="300" class="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-100">
                 <h3 class="text-base sm:text-lg font-bold text-slate-900 mb-3 sm:mb-4">Detail Pengajar</h3>
                 <div class="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
@@ -63,7 +89,7 @@
                 @if($modul->file_path)
                     <a href="{{ asset('storage/' . $modul->file_path) }}" target="_blank" class="flex items-center gap-3 w-full bg-rose-50 text-rose-600 hover:bg-rose-100 hover:text-rose-700 font-medium py-3 px-4 rounded-xl transition-colors border border-rose-100 text-sm active:scale-95">
                         <svg class="w-5 h-5 sm:w-6 sm:h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-                        Buka Dokumen PDF
+                        Buka Dokumen PDF (Download)
                     </a>
                 @else
                     <div class="text-xs sm:text-sm text-slate-500 flex items-center gap-2 bg-slate-50 py-3 px-4 rounded-xl border border-slate-100">

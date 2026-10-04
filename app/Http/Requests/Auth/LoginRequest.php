@@ -33,16 +33,38 @@ class LoginRequest extends FormRequest
         ];
     }
 
-    /**
-     * Attempt to authenticate the request's credentials.
-     *
-     * @throws ValidationException
-     */
     public function authenticate(): void
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        $input = trim($this->input('email'));
+        $password = $this->input('password');
+        $remember = $this->boolean('remember');
+
+        // Prepare email variations (supports index code like 'ar', 'da', 'sh' or domain aliases)
+        $candidates = [];
+        if (!str_contains($input, '@')) {
+            $code = strtolower($input);
+            $candidates[] = $code . '@jadibisa.com';
+            $candidates[] = $code . '@bogoreducare.org';
+        } else {
+            $candidates[] = $input;
+            if (str_ends_with($input, '@jadibisa.com')) {
+                $candidates[] = str_replace('@jadibisa.com', '@bogoreducare.org', $input);
+            } elseif (str_ends_with($input, '@bogoreducare.org')) {
+                $candidates[] = str_replace('@bogoreducare.org', '@jadibisa.com', $input);
+            }
+        }
+
+        $authenticated = false;
+        foreach ($candidates as $email) {
+            if (Auth::attempt(['email' => $email, 'password' => $password], $remember)) {
+                $authenticated = true;
+                break;
+            }
+        }
+
+        if (!$authenticated) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([

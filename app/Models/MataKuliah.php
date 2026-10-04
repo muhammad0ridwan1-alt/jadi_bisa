@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class MataKuliah extends Model
 {
-    protected $fillable = ['name', 'kode_mk', 'jurusan', 'dosen_id'];
+    protected $fillable = ['name', 'kode_mk', 'jurusan', 'cawu', 'angkatan', 'tahun_ajaran', 'dosen_id'];
 
     public function moduls() {
         return $this->hasMany(Modul::class);
